@@ -11,6 +11,7 @@ import {
   MoreHorizontal,
   ExternalLink,
   Send,
+  Check,
 } from "lucide-react";
 
 export default function PostDetailView({
@@ -22,6 +23,7 @@ export default function PostDetailView({
   const navigate = useNavigate();
   const [index, setIndex] = useState(initialImage);
   const [draft, setDraft] = useState("");
+  const [shareCopied, setShareCopied] = useState(false);
   const { liked, comments } = postState;
   const next = (direction) =>
     setIndex(
@@ -51,6 +53,12 @@ export default function PostDetailView({
       });
       setDraft("");
     }
+  };
+  const sharePost = async () => {
+    const url = `${window.location.origin}/post/${project.id}?img=0`;
+    await navigator.clipboard?.writeText(url);
+    setShareCopied(true);
+    window.setTimeout(() => setShareCopied(false), 1600);
   };
   return (
     <div
@@ -176,9 +184,12 @@ export default function PostDetailView({
               <button className="flex-1 flex items-center justify-center gap-1 text-sm font-semibold text-text-secondary">
                 <MessageCircle size={18} /> Comment
               </button>
-              <button className="flex-1 flex items-center justify-center gap-1 text-sm font-semibold text-text-secondary">
-                <Share2 size={18} /> Share
-              </button>
+              <div className="relative flex-1">
+                <button onClick={sharePost} className="w-full h-full flex items-center justify-center gap-1 text-sm font-semibold text-text-secondary">
+                  <Share2 size={18} /> Share
+                </button>
+                {shareCopied && <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 rounded-lg bg-fb-blue text-white px-3 py-1.5 text-xs font-semibold whitespace-nowrap flex items-center gap-1"><Check size={13}/> Copied</div>}
+              </div>
             </div>
             <div className="border-t border-divider p-3 space-y-2">
               {comments.map((comment, i) => (

@@ -7,6 +7,7 @@ import {
   Globe2,
   ExternalLink,
   Send,
+  Check,
 } from "lucide-react";
 import ImageGrid from "./ImageGrid";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +17,7 @@ export default function PostCard({ project, number, postState, setPostState }) {
   const [expanded, setExpanded] = useState(false);
   const [commentsOpen, setCommentsOpen] = useState(false);
   const [draft, setDraft] = useState("");
+  const [shareCopied, setShareCopied] = useState(false);
   const { liked, comments } = postState;
   const caption = (
     <>
@@ -40,8 +42,14 @@ export default function PostCard({ project, number, postState, setPostState }) {
       setDraft("");
     }
   };
+  const sharePost = async () => {
+    const url = `${window.location.origin}/post/${project.id}?img=0`;
+    await navigator.clipboard?.writeText(url);
+    setShareCopied(true);
+    window.setTimeout(() => setShareCopied(false), 1600);
+  };
   return (
-    <article className="bg-white rounded-lg overflow-hidden pressable">
+    <article className="bg-white rounded-lg overflow-hidden">
       <div className="p-3 flex items-center gap-2">
         <img
           className="w-10 h-10 rounded-full object-cover"
@@ -117,9 +125,12 @@ export default function PostCard({ project, number, postState, setPostState }) {
         >
           <MessageCircle size={18} /> Comment
         </button>
-        <button className="flex-1 flex justify-center items-center gap-2 text-sm font-semibold text-text-secondary">
-          <Share2 size={18} /> Share
-        </button>
+        <div className="relative flex-1">
+          <button onClick={sharePost} className="w-full h-full flex justify-center items-center gap-2 text-sm font-semibold text-text-secondary">
+            <Share2 size={18} /> Share
+          </button>
+          {shareCopied && <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 rounded-lg bg-fb-blue text-white px-3 py-1.5 text-xs font-semibold whitespace-nowrap flex items-center gap-1"><Check size={13}/> Copied</div>}
+        </div>
       </div>
       {commentsOpen && (
         <div className="border-t border-divider px-3 py-2 space-y-2">

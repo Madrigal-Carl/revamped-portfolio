@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, Routes, Route } from "react-router-dom";
-import TopNav from "./components/TopNav";
+import { Eye } from "lucide-react";
 import ProfileHeader from "./components/ProfileHeader";
 import Sidebar from "./components/Sidebar";
 import PostFeed from "./components/PostFeed";
@@ -27,7 +27,7 @@ const initialState = Object.fromEntries(
 
 function ProfilePage({ postState, setPostState }) {
   return (
-    <main className="max-w-295 mx-auto">
+    <main className="max-w-350 mx-auto">
       <ProfileHeader />
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(280px,380px)_minmax(0,1fr)] gap-2 p-2">
         <Sidebar />
@@ -60,7 +60,6 @@ function AppContent() {
   }, [detail, project, navigate]);
   return (
     <>
-      <TopNav visits={visits} />
       <Routes>
         <Route
           path="*"
@@ -69,6 +68,9 @@ function AppContent() {
           }
         />
       </Routes>
+      <div className="fixed bottom-5 right-5 z-30 flex items-center gap-2 rounded-full bg-white shadow-lg border-2 border-fb-blue px-4 py-2.5 text-sm font-semibold text-fb-blue">
+        <Eye size={18} /> {visits.toLocaleString()} profile views
+      </div>
       {project && (
         <PostDetailView
           project={project}
