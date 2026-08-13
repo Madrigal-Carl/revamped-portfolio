@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-poppins: "Poppins", sans-serif;
+  --font-inter: "Inter", sans-serif;
+  --color-canvas: #f0f2f5;
+  --color-card: #ffffff;
+  --color-divider: #e4e6eb;
+  --color-fb-blue: #1877f2;
+  --color-fb-blue-pressed: #0a5fc8;
+  --color-fb-blue-tint: #e7f3ff;
+  --color-fb-blue-tint-2: #cfe3fd;
+  --color-success-green: #42b72a;
+  --color-live-red: #fa3e3e;
+  --color-text-primary: #050505;
+  --color-text-secondary: #65676b;
+  --color-text-tertiary: #8a8d91;
+  --color-heart-pink: #f3425f;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #f0f2f5;
+  color: #050505;
+  font-family: "Inter", sans-serif;
+}
+button,
+input {
+  font: inherit;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.font-poppins {
+  font-family: "Poppins", sans-serif;
+}
+.font-inter {
+  font-family: "Inter", sans-serif;
+}
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+.pressable {
+  transition:
+    filter 0.15s ease,
+    transform 0.15s ease;
+}
+.pressable:active {
+  filter: brightness(0.97);
+  transform: scale(0.995);
+}
+@keyframes heart-pop {
+  0% {
+    transform: scale(0.9);
+  }
+  55% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.heart-pop {
+  animation: heart-pop 0.35s cubic-bezier(0.2, 1.5, 0.4, 1);
+}
