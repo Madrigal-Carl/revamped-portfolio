@@ -10,6 +10,7 @@ create table public.projects (
   image_urls text[] not null default '{}',
   project_url text,
   repo_url text,
+  completed_at date,
   created_at timestamptz not null default now()
 );
 

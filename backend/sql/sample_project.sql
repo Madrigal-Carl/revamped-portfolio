@@ -7,6 +7,7 @@
 --   image_urls  text[]  — array of image URLs (not a single image)
 --   project_url text, nullable — live demo link
 --   repo_url    text, nullable  — repository link
+--   completed_at date, nullable — project completion date (YYYY-MM-DD)
 --   id and created_at are generated automatically.
 
 insert into public.projects (
@@ -16,7 +17,8 @@ insert into public.projects (
   tech_stack,
   image_urls,
   project_url,
-  repo_url
+  repo_url,
+  completed_at
 )
 values (
   'Your Project Name',                      -- title
@@ -37,7 +39,8 @@ values (
     'https://picsum.photos/seed/sample3/800/500'
   ],                                        -- image_urls
   'https://your-live-demo.example.com',     -- project_url (or NULL)
-  'https://github.com/you/repo'             -- repo_url (or NULL)
+  'https://github.com/you/repo',            -- repo_url (or NULL)
+  '2026-05-15'                              -- completed_at (or NULL)
 );
 
 -- Optional: verify it was inserted (returns the new row).
