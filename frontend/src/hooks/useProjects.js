@@ -99,13 +99,33 @@ export function useProjects() {
   }, []);
 
   const likeProject = async (projectId) => {
-    if (likedIds.includes(projectId)) return;
+    const guestId = getGuestId();
 
+    // Unlike: remove only this guest's like via the delete function.
+    if (likedIds.includes(projectId)) {
+      const { error } = await supabase.rpc("delete_like", {
+        p_project_id: projectId,
+        p_guest_id: guestId,
+      });
+
+      if (error) return;
+
+      setLikedIds((prev) => prev.filter((id) => id !== projectId));
+      setProjects((prev) =>
+        prev.map((project) =>
+          project.id === projectId
+            ? { ...project, like_count: Math.max(0, (project.like_count ?? 0) - 1) }
+            : project,
+        ),
+      );
+      return;
+    }
+
+    // Like.
     const { error } = await supabase
       .from("likes")
-      .insert({ project_id: projectId, guest_id: getGuestId() });
+      .insert({ project_id: projectId, guest_id: guestId });
 
-    // Duplicate like (unique project_id + guest_id) — silently ignore.
     if (error) return;
 
     setLikedIds((prev) => [...prev, projectId]);

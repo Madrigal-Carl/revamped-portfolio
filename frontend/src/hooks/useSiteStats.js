@@ -50,13 +50,26 @@ export function useSiteStats() {
   }, []);
 
   const likeSite = async () => {
-    if (liked) return;
+    const guestId = getGuestId();
 
+    // Unlike: remove only this guest's site like via the delete function.
+    if (liked) {
+      const { error } = await supabase.rpc("delete_site_like", {
+        p_guest_id: guestId,
+      });
+
+      if (error) return;
+
+      setLiked(false);
+      setLikeCount((current) => Math.max(0, current - 1));
+      return;
+    }
+
+    // Like.
     const { error } = await supabase
       .from("site_likes")
-      .insert({ guest_id: getGuestId() });
+      .insert({ guest_id: guestId });
 
-    // Duplicate like (unique guest_id) — silently ignore.
     if (error) return;
 
     setLiked(true);

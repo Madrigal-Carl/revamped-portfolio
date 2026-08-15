@@ -98,6 +98,10 @@ Server runs on `PORT` (default `5000`).
 | `site_views` | SELECT + INSERT only (unique guest_id) |
 | `site_likes` | SELECT + INSERT only (unique guest_id) |
 
+Unliking is handled by security-definer RPC functions (`delete_like`,
+`delete_site_like`) that remove **only the caller's** like by matching
+`guest_id` — there is still no direct client DELETE policy.
+
 Comment/like moderation (UPDATE/DELETE) is handled separately later and is
 **not** part of these policies.
 
