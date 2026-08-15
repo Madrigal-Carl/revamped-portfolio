@@ -9,7 +9,8 @@
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "check": "node scripts/check-connection.js",
-    "seed": "node src/seeders/post.seeder.js"
+    "seed-projects": "node scripts/seed-projects.js",
+    "upload-images": "node scripts/upload-images.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",

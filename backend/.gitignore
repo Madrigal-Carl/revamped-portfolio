@@ -7,3 +7,8 @@ node_modules/
 
 # Logs
 *.log
+
+# Local images to upload (don't commit actual images, keep the folder structure)
+scripts/images-to-upload/*
+!scripts/images-to-upload/.gitkeep
+!scripts/images-to-upload/README.md

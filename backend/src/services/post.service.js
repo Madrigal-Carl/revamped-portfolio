@@ -11,6 +11,9 @@ import {
   getLikesForProjects,
   createLike,
 } from "../models/like.model.js";
+import { getFeaturesForProjects } from "../models/feature.model.js";
+import { getTechStacksForProjects } from "../models/techStack.model.js";
+import { getImagesForProjects } from "../models/image.model.js";
 
 const groupBy = (rows, key) =>
   rows.reduce((acc, row) => {
@@ -21,6 +24,28 @@ const groupBy = (rows, key) =>
 
 const DUPLICATE_LIKE_CODE = "23505";
 
+const attachProjectChildren = (project, {
+  commentsByProject,
+  likesByProject,
+  featuresByProject,
+  techStacksByProject,
+  imagesByProject,
+}, guestId) => {
+  const projectLikes = likesByProject[project.id] ?? [];
+
+  return {
+    ...project,
+    features: (featuresByProject[project.id] ?? []).map((row) => row.name),
+    tech_stack: (techStacksByProject[project.id] ?? []).map((row) => row.name),
+    image_urls: (imagesByProject[project.id] ?? []).map((row) => row.path),
+    comments: commentsByProject[project.id] ?? [],
+    like_count: projectLikes.length,
+    liked_by_me: guestId
+      ? projectLikes.some((like) => like.guest_id === guestId)
+      : false,
+  };
+};
+
 export const getPosts = async (guestId) => {
   const projects = await getAllProjects();
 
@@ -28,38 +53,41 @@ export const getPosts = async (guestId) => {
 
   const projectIds = projects.map((project) => project.id);
 
-  const [comments, likes] = await Promise.all([
+  const [comments, likes, features, techStacks, images] = await Promise.all([
     getCommentsForProjects(projectIds),
     getLikesForProjects(projectIds),
+    getFeaturesForProjects(projectIds),
+    getTechStacksForProjects(projectIds),
+    getImagesForProjects(projectIds),
   ]);
 
-  const commentsByProject = groupBy(comments, "project_id");
-  const likesByProject = groupBy(likes, "project_id");
+  const groups = {
+    commentsByProject: groupBy(comments, "project_id"),
+    likesByProject: groupBy(likes, "project_id"),
+    featuresByProject: groupBy(features, "project_id"),
+    techStacksByProject: groupBy(techStacks, "project_id"),
+    imagesByProject: groupBy(images, "project_id"),
+  };
 
-  return projects.map((project) => {
-    const projectLikes = likesByProject[project.id] ?? [];
-
-    return {
-      ...project,
-      comments: commentsByProject[project.id] ?? [],
-      like_count: projectLikes.length,
-      liked_by_me: guestId
-        ? projectLikes.some((like) => like.guest_id === guestId)
-        : false,
-    };
-  });
+  return projects.map((project) => attachProjectChildren(project, groups, guestId));
 };
 
 export const getPost = async (id, guestId) => {
   const project = await getProjectById(id);
 
-  const [comments, likes] = await Promise.all([
+  const [comments, likes, features, techStacks, images] = await Promise.all([
     getCommentsForProjects([id]),
     getLikesForProjects([id]),
+    getFeaturesForProjects([id]),
+    getTechStacksForProjects([id]),
+    getImagesForProjects([id]),
   ]);
 
   return {
     ...project,
+    features: features.map((row) => row.name),
+    tech_stack: techStacks.map((row) => row.name),
+    image_urls: images.map((row) => row.path),
     comments,
     like_count: likes.length,
     liked_by_me: guestId
