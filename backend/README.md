@@ -95,6 +95,8 @@ Server runs on `PORT` (default `5000`).
 | `features`   | SELECT only                  |
 | `tech_stacks`| SELECT only                  |
 | `images`     | SELECT only                  |
+| `site_views` | SELECT + INSERT only (unique guest_id) |
+| `site_likes` | SELECT + INSERT only (unique guest_id) |
 
 Comment/like moderation (UPDATE/DELETE) is handled separately later and is
 **not** part of these policies.

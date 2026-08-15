@@ -6,8 +6,21 @@ import Sidebar from "./components/Sidebar";
 import PostFeed from "./components/PostFeed";
 import PostDetailView from "./components/PostDetailView";
 import { useProjects } from "./hooks/useProjects";
+import { useSiteStats } from "./hooks/useSiteStats";
 
-function ProfilePage({ headerRef, visits, likes, liked, onLike, projects, likedIds, likeProject, addComment, loading, error }) {
+function ProfilePage({
+  headerRef,
+  visits,
+  likes,
+  liked,
+  onLike,
+  projects,
+  likedIds,
+  likeProject,
+  addComment,
+  loading,
+  error,
+}) {
   return (
     <main className="max-w-350 mx-auto">
       <ProfileHeader
@@ -33,34 +46,18 @@ function ProfilePage({ headerRef, visits, likes, liked, onLike, projects, likedI
 }
 
 function AppContent() {
-  const [visits, setVisits] = useState(1204);
-  const [likes, setLikes] = useState(1204);
-  const [liked, setLiked] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const headerRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { projects, likedIds, loading, error, likeProject, addComment } =
     useProjects();
-  useEffect(() => {
-    const next = Number(localStorage.getItem("portfolio-visits") || 1204) + 1;
-    localStorage.setItem("portfolio-visits", next);
-    setVisits(next);
-  }, []);
-  useEffect(() => {
-    const stored = Number(localStorage.getItem("portfolio-likes") || 1204);
-    setLikes(stored);
-  }, []);
-  useEffect(() => {
-    setLiked(localStorage.getItem("portfolio-liked") === "1");
-  }, []);
-  const onLike = () => {
-    setLiked((current) => {
-      const next = !current;
-      localStorage.setItem("portfolio-liked", next ? "1" : "0");
-      return next;
-    });
-  };
+  const {
+    viewCount,
+    likeCount,
+    liked,
+    likeSite,
+  } = useSiteStats();
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setHeaderVisible(entry.isIntersecting),
@@ -83,10 +80,10 @@ function AppContent() {
           element={
             <ProfilePage
               headerRef={headerRef}
-              visits={visits}
-              likes={likes}
+              visits={viewCount}
+              likes={likeCount}
               liked={liked}
-              onLike={onLike}
+              onLike={likeSite}
               projects={projects}
               likedIds={likedIds}
               likeProject={likeProject}
@@ -98,11 +95,11 @@ function AppContent() {
         />
       </Routes>
       <button
-        onClick={onLike}
+        onClick={likeSite}
         className={`fixed bottom-5 right-5 z-30 flex items-center gap-2 rounded-full shadow-lg px-4 py-2.5 text-sm font-semibold transition-all duration-300 ${liked ? "bg-heart-pink text-white" : "bg-white ring-2 ring-inset ring-heart-pink text-heart-pink"} ${!headerVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0 pointer-events-none"}`}
       >
         <Heart size={18} fill={liked ? "currentColor" : "none"} />{" "}
-        {liked ? likes + 1 : likes} likes
+        {likeCount} likes
       </button>
       {project && (
         <PostDetailView

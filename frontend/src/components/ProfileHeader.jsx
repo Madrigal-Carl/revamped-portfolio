@@ -24,7 +24,7 @@ export default function ProfileHeader({ visits, likes, liked, onLike, sectionRef
             className={`pressable inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 font-semibold ${liked ? "bg-heart-pink text-white" : "bg-white ring-2 ring-inset ring-heart-pink text-heart-pink"}`}
           >
             <Heart size={15} fill={liked ? "currentColor" : "none"} />{" "}
-            {liked ? likes + 1 : likes} likes
+            {likes} likes
           </button>
         </div>
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-3 text-[13px] text-text-secondary">
