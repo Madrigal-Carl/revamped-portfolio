@@ -1,21 +1,7 @@
-import { Download, Mail, Phone } from "lucide-react";
-export default function ProfileHeader() {
-  const download = () => {
-    const blob = new Blob(
-      [
-        "Carl Salido Madrigal\nFull-Stack Developer\ncarlsalido.madrigal@gmail.com",
-      ],
-      { type: "text/plain" },
-    );
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "Carl-Salido-Madrigal-CV.txt";
-    a.click();
-    URL.revokeObjectURL(url);
-  };
+import { Heart, Eye, Mail, Phone } from "lucide-react";
+export default function ProfileHeader({ visits, likes, liked, onLike, sectionRef }) {
   return (
-    <section className="bg-white border-b border-divider">
+    <section ref={sectionRef} className="bg-white border-b border-divider">
       <div
         className="h-50 bg-cover bg-center"
         style={{
@@ -34,12 +20,18 @@ export default function ProfileHeader() {
         <p className="text-[15px] text-text-secondary mt-1">
           Full-Stack Developer | MERN · Laravel · Flutter
         </p>
-        <button
-          onClick={download}
-          className="pressable mt-4 inline-flex items-center gap-2 rounded-lg bg-fb-blue hover:bg-fb-blue-pressed text-white px-5 py-2.5 text-[17px] font-semibold"
-        >
-          <Download size={18} /> Download CV
-        </button>
+        <div className="mt-4 flex items-center justify-center gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-fb-blue px-3 py-1.5 font-semibold text-white">
+            <Eye size={15} /> {visits.toLocaleString()} views
+          </span>
+          <button
+            onClick={onLike}
+            className={`pressable inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 font-semibold ${liked ? "bg-heart-pink text-white" : "bg-white ring-2 ring-inset ring-heart-pink text-heart-pink"}`}
+          >
+            <Heart size={15} fill={liked ? "currentColor" : "none"} />{" "}
+            {liked ? likes + 1 : likes} likes
+          </button>
+        </div>
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-3 text-[13px] text-text-secondary">
           <span className="inline-flex items-center gap-1">
             <Mail size={14} /> carlsalido.madrigal@gmail.com

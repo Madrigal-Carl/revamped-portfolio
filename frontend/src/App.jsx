@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, Routes, Route } from "react-router-dom";
-import { Eye } from "lucide-react";
+import { Heart, Eye } from "lucide-react";
 import ProfileHeader from "./components/ProfileHeader";
 import Sidebar from "./components/Sidebar";
 import PostFeed from "./components/PostFeed";
@@ -25,10 +25,24 @@ const initialState = Object.fromEntries(
   ]),
 );
 
-function ProfilePage({ postState, setPostState }) {
+function ProfilePage({
+  postState,
+  setPostState,
+  headerRef,
+  visits,
+  likes,
+  liked,
+  onLike,
+}) {
   return (
     <main className="max-w-350 mx-auto">
-      <ProfileHeader />
+      <ProfileHeader
+        sectionRef={headerRef}
+        visits={visits}
+        likes={likes}
+        liked={liked}
+        onLike={onLike}
+      />
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(280px,380px)_minmax(0,1fr)] gap-2 p-2">
         <Sidebar />
         <PostFeed
@@ -44,7 +58,11 @@ function ProfilePage({ postState, setPostState }) {
 
 function AppContent() {
   const [visits, setVisits] = useState(1204);
+  const [likes, setLikes] = useState(1204);
+  const [liked, setLiked] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
   const [postState, setPostState] = useState(initialState);
+  const headerRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
@@ -52,6 +70,28 @@ function AppContent() {
     localStorage.setItem("portfolio-visits", next);
     setVisits(next);
   }, []);
+  useEffect(() => {
+    const stored = Number(localStorage.getItem("portfolio-likes") || 1204);
+    setLikes(stored);
+  }, []);
+  useEffect(() => {
+    setLiked(localStorage.getItem("portfolio-liked") === "1");
+  }, []);
+  const onLike = () => {
+    setLiked((current) => {
+      const next = !current;
+      localStorage.setItem("portfolio-liked", next ? "1" : "0");
+      return next;
+    });
+  };
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setHeaderVisible(entry.isIntersecting),
+      { threshold: 0 },
+    );
+    if (headerRef.current) observer.observe(headerRef.current);
+    return () => observer.disconnect();
+  }, [headerRef.current]);
   const detail = location.pathname.match(/^\/post\/([^/]+)/);
   const project = detail && projects.find((item) => item.id === detail[1]);
   const image = Number(new URLSearchParams(location.search).get("img")) || 0;
@@ -64,13 +104,25 @@ function AppContent() {
         <Route
           path="*"
           element={
-            <ProfilePage postState={postState} setPostState={setPostState} />
+            <ProfilePage
+              postState={postState}
+              setPostState={setPostState}
+              headerRef={headerRef}
+              visits={visits}
+              likes={likes}
+              liked={liked}
+              onLike={onLike}
+            />
           }
         />
       </Routes>
-      <div className="fixed bottom-5 right-5 z-30 flex items-center gap-2 rounded-full bg-white shadow-lg border-2 border-fb-blue px-4 py-2.5 text-sm font-semibold text-fb-blue">
-        <Eye size={18} /> {visits.toLocaleString()} profile views
-      </div>
+      <button
+        onClick={onLike}
+        className={`fixed bottom-5 right-5 z-30 flex items-center gap-2 rounded-full shadow-lg px-4 py-2.5 text-sm font-semibold transition-all duration-300 ${liked ? "bg-heart-pink text-white" : "bg-white ring-2 ring-inset ring-heart-pink text-heart-pink"} ${!headerVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0 pointer-events-none"}`}
+      >
+        <Heart size={18} fill={liked ? "currentColor" : "none"} />{" "}
+        {liked ? likes + 1 : likes} likes
+      </button>
       {project && (
         <PostDetailView
           project={project}
