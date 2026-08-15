@@ -6,7 +6,7 @@ export const profile = {
   title: "Full-Stack Developer | MERN · Laravel · Flutter",
   email: "carlsalido.madrigal@gmail.com",
   phone: "0964 178 7140",
-  portfolioUrl: "https://portfolio-tan.vercel.app",
+  portfolioUrl: "https://fport-jade.vercel.app/",
   portfolioLabel: "portfolio-tan.vercel.app",
   location: "Marinduque, PH",
   cover: coverImg,
