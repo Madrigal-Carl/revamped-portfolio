@@ -1,3 +1,6 @@
+import coverImg from "../assets/bg.jpg";
+import avatarImg from "../assets/me.jpg";
+
 export const profile = {
   name: "Carl Salido Madrigal",
   title: "Full-Stack Developer | MERN · Laravel · Flutter",
@@ -6,8 +9,8 @@ export const profile = {
   portfolioUrl: "https://portfolio-tan.vercel.app",
   portfolioLabel: "portfolio-tan.vercel.app",
   location: "Marinduque, PH",
-  cover: "https://picsum.photos/seed/devcover/1600/500",
-  avatar: "https://picsum.photos/seed/carlavatar/300/300",
+  cover: coverImg,
+  avatar: avatarImg,
 };
 
 export const intro =

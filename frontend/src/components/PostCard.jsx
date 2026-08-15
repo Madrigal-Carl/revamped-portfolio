@@ -12,6 +12,7 @@ import {
 import ImageGrid from "./ImageGrid";
 import { useNavigate } from "react-router-dom";
 import { formatMonthYear } from "../hooks/useProjects";
+import avatarImg from "../assets/me.jpg";
 
 const domainOf = (url) => {
   if (!url) return "";
@@ -70,7 +71,7 @@ export default function PostCard({ project, liked, onLike, onAddComment }) {
       <div className="p-3 flex items-center gap-2">
         <img
           className="w-10 h-10 rounded-full object-cover"
-          src="https://picsum.photos/seed/carlavatar/300/300"
+          src={avatarImg}
           alt="Carl Salido Madrigal"
         />
         <div className="flex-1">
