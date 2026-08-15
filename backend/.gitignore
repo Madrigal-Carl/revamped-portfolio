@@ -1,0 +1,9 @@
+# Dependencies
+node_modules/
+
+# Environment variables (contains secrets - never commit real values)
+.env
+.env.local
+
+# Logs
+*.log
