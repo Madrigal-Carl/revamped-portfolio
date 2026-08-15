@@ -65,6 +65,21 @@ export function EducationCard() {
         meta="Marinduque State University — Cum Laude"
         lines={["2022 – 2026"]}
       />
+      <Item
+        title="Information and Communications Technology"
+        meta="Marinduque Midwest College — With Honor"
+        lines={["2020 – 2022"]}
+      />
+      <Item
+        title="Bangbang National High School"
+        meta="Junior High School"
+        lines={["2016 – 2020"]}
+      />
+      <Item
+        title="Gasan Central School"
+        meta="Elementary"
+        lines={["2010 – 2016"]}
+      />
     </InfoCard>
   );
 }

@@ -1,5 +1,6 @@
 import BioCard from "./BioCard";
 import SkillsCard from "./SkillsCard";
+import GalleryCard from "./GalleryCard";
 import { ContactCard, ExperienceCard, EducationCard } from "./InfoCards";
 export default function Sidebar() {
   return (
@@ -9,6 +10,7 @@ export default function Sidebar() {
       <SkillsCard />
       <ExperienceCard />
       <EducationCard />
+      <GalleryCard />
     </aside>
   );
 }
