@@ -2,7 +2,7 @@ import BioCard from "./BioCard";
 import SkillsCard from "./SkillsCard";
 import GalleryCard from "./GalleryCard";
 import { ContactCard, ExperienceCard, EducationCard } from "./InfoCards";
-export default function Sidebar() {
+export default function Sidebar({ projects }) {
   return (
     <aside className="space-y-2">
       <BioCard />
@@ -10,7 +10,7 @@ export default function Sidebar() {
       <SkillsCard />
       <ExperienceCard />
       <EducationCard />
-      <GalleryCard />
+      <GalleryCard projects={projects} />
     </aside>
   );
 }

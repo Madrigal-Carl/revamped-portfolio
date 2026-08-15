@@ -242,7 +242,7 @@ export const projectData = [
       "TanStack Query",
       "Tailwind CSS",
       "JavaScript",
-      "Resend",
+      "Brevo",
       "Lovable",
       "Render",
       "Vercel",

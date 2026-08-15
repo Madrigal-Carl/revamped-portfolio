@@ -4,55 +4,67 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
+  MoreHorizontal,
+  ExternalLink,
+  LinkIcon,
   Heart,
   MessageCircle,
   Share2,
-  Globe2,
-  MoreHorizontal,
-  ExternalLink,
   Send,
   Check,
 } from "lucide-react";
+import { formatMonthYear } from "../hooks/useProjects";
+
+const domainOf = (url) => {
+  if (!url) return "";
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+};
 
 export default function PostDetailView({
   project,
-  postState,
-  setPostState,
+  liked,
+  onLike,
+  onAddComment,
   initialImage,
 }) {
   const navigate = useNavigate();
   const [index, setIndex] = useState(initialImage);
   const [draft, setDraft] = useState("");
   const [shareCopied, setShareCopied] = useState(false);
-  const { liked, comments } = postState;
+  const images = project.image_urls ?? [];
+  const comments = project.comments ?? [];
+  const likeCount = project.like_count ?? 0;
   const next = (direction) =>
     setIndex(
-      (current) =>
-        (current + direction + project.images.length) % project.images.length,
+      (current) => (current + direction + images.length) % images.length,
     );
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    const total = images.length;
     const onKey = (event) => {
       if (event.key === "Escape") navigate("/");
-      if (event.key === "ArrowLeft") next(-1);
-      if (event.key === "ArrowRight") next(1);
+      if (event.key === "ArrowLeft")
+        setIndex((current) => (current - 1 + total) % total);
+      if (event.key === "ArrowRight")
+        setIndex((current) => (current + 1) % total);
     };
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKey);
     };
-  }, []);
-  const addComment = (event) => {
+  }, [navigate, images.length]);
+  const submitComment = async (event) => {
     event.preventDefault();
-    if (draft.trim()) {
-      setPostState({
-        ...postState,
-        comments: [...comments, { name: "You", body: draft.trim() }],
-      });
-      setDraft("");
-    }
+    const content = draft.trim();
+    if (!content) return;
+    await onAddComment(project.id, content);
+    setDraft("");
   };
   const sharePost = async () => {
     const url = `${window.location.origin}/post/${project.id}?img=0`;
@@ -88,12 +100,14 @@ export default function PostDetailView({
             if (Math.abs(delta) > 45) next(delta > 0 ? -1 : 1);
           }}
         >
-          <img
-            className="w-full h-full object-contain transition-opacity duration-200"
-            src={project.images[index]}
-            alt={project.title}
-          />
-          {project.images.length > 1 && (
+          {images.length > 0 && (
+            <img
+              className="w-full h-full object-contain transition-opacity duration-200"
+              src={images[index]}
+              alt={project.title}
+            />
+          )}
+          {images.length > 1 && (
             <>
               <button
                 type="button"
@@ -112,7 +126,7 @@ export default function PostDetailView({
                 <ChevronRight size={28} />
               </button>
               <span className="absolute bottom-3 left-1/2 -translate-x-1/2 text-white text-[13px]">
-                {index + 1} / {project.images.length}
+                {index + 1} / {images.length}
               </span>
             </>
           )}
@@ -129,8 +143,7 @@ export default function PostDetailView({
                 Carl Salido Madrigal
               </div>
               <div className="text-[13px] text-text-secondary">
-                posted a project · {project.date} ·{" "}
-                <Globe2 className="inline" size={12} /> Public
+                completed a project · {formatMonthYear(project.completed_at)}
               </div>
             </div>
             <MoreHorizontal size={20} className="text-text-secondary" />
@@ -140,43 +153,56 @@ export default function PostDetailView({
               <strong className="font-poppins font-semibold">
                 {project.title}
               </strong>
-              <div className="text-text-secondary mt-1">{project.stack}</div>
+              {(project.tech_stack ?? []).length > 0 && (
+                <div className="text-text-secondary mt-1">
+                  {project.tech_stack.join(" · ")}
+                </div>
+              )}
+              {project.description && (
+                <div className="mt-2 text-text-primary">{project.description}</div>
+              )}
               <ul className="mt-2 space-y-2 list-disc ml-5">
-                {project.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
+                {(project.features ?? []).map((feature) => (
+                  <li key={feature}>{feature}</li>
                 ))}
               </ul>
             </div>
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noreferrer"
-              className="mx-3 mb-3 border border-divider rounded-lg flex items-center gap-3 overflow-hidden hover:bg-canvas"
-            >
-              <img
-                className="w-24 h-16 object-cover"
-                src={project.images[0]}
-                alt=""
-              />
-              <div className="py-2">
-                <div className="font-semibold text-sm">
-                  View {project.title.split(" – ")[0]}
+            {(project.project_url || project.repo_url) && (
+              <a
+                href={project.project_url || project.repo_url}
+                target="_blank"
+                rel="noreferrer"
+                className="mx-3 mb-3 border border-divider rounded-lg flex items-center gap-3 overflow-hidden hover:bg-canvas"
+              >
+                {images[0] ? (
+                  <img
+                    className="w-24 h-16 object-cover"
+                    src={images[0]}
+                    alt=""
+                  />
+                ) : (
+                  <div className="w-24 h-16 flex items-center justify-center bg-canvas text-text-tertiary">
+                    <LinkIcon size={20} />
+                  </div>
+                )}
+                <div className="py-2 min-w-0">
+                  <div className="font-semibold text-sm truncate">
+                    {project.project_url ? "View project" : "View repository"}
+                  </div>
+                  <div className="text-xs text-text-secondary flex gap-1 items-center truncate">
+                    {domainOf(project.project_url || project.repo_url)}{" "}
+                    <ExternalLink size={11} />
+                  </div>
                 </div>
-                <div className="text-xs text-text-secondary flex gap-1 items-center">
-                  {project.domain} <ExternalLink size={11} />
-                </div>
-              </div>
-            </a>
+              </a>
+            )}
             <div className="px-3 py-2 flex items-center gap-1 text-[13px] text-text-secondary">
-              <Heart size={15} fill="#F3425F" color="#F3425F" />{" "}
-              {liked ? 25 : 24} likes{" "}
-              <span className="ml-auto">
-                {comments.length} comments · 3 shares
-              </span>
+              <Heart size={15} fill="#F3425F" color="#F3425F" /> {likeCount}{" "}
+              likes <span className="ml-auto">{comments.length} comments</span>
             </div>
             <div className="border-t border-divider h-10 flex">
               <button
-                onClick={() => setPostState({ ...postState, liked: !liked })}
+                onClick={() => onLike(project.id)}
                 className={`flex-1 flex items-center justify-center gap-1 text-sm font-semibold ${liked ? "text-heart-pink" : "text-text-secondary"}`}
               >
                 <Heart size={18} fill={liked ? "currentColor" : "none"} /> Like
@@ -185,18 +211,22 @@ export default function PostDetailView({
                 <MessageCircle size={18} /> Comment
               </button>
               <div className="relative flex-1">
-                <button onClick={sharePost} className="w-full h-full flex items-center justify-center gap-1 text-sm font-semibold text-text-secondary">
+                <button
+                  onClick={sharePost}
+                  className="w-full h-full flex items-center justify-center gap-1 text-sm font-semibold text-text-secondary"
+                >
                   <Share2 size={18} /> Share
                 </button>
-                {shareCopied && <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 rounded-lg bg-fb-blue text-white px-3 py-1.5 text-xs font-semibold whitespace-nowrap flex items-center gap-1"><Check size={13}/> Copied</div>}
+                {shareCopied && (
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 rounded-lg bg-fb-blue text-white px-3 py-1.5 text-xs font-semibold whitespace-nowrap flex items-center gap-1">
+                    <Check size={13} /> Copied
+                  </div>
+                )}
               </div>
             </div>
             <div className="border-t border-divider p-3 space-y-2">
-              {comments.map((comment, i) => (
-                <div
-                  key={`${comment.name}-${i}`}
-                  className="flex items-start gap-2"
-                >
+              {comments.map((comment) => (
+                <div key={comment.id} className="flex items-start gap-2">
                   <span className="w-8 h-8 shrink-0 rounded-full bg-fb-blue text-white flex items-center justify-center font-poppins font-semibold text-sm">
                     A
                   </span>
@@ -211,7 +241,7 @@ export default function PostDetailView({
             </div>
           </div>
           <form
-            onSubmit={addComment}
+            onSubmit={submitComment}
             className="sticky bottom-0 p-2 bg-white border-t border-divider flex items-center gap-2"
           >
             <span className="w-8 h-8 shrink-0 rounded-full bg-fb-blue text-white flex items-center justify-center font-poppins font-semibold text-sm">

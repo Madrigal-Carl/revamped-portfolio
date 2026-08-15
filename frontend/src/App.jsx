@@ -1,39 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, Routes, Route } from "react-router-dom";
-import { Heart, Eye } from "lucide-react";
+import { Heart } from "lucide-react";
 import ProfileHeader from "./components/ProfileHeader";
 import Sidebar from "./components/Sidebar";
 import PostFeed from "./components/PostFeed";
 import PostDetailView from "./components/PostDetailView";
-import { projects } from "./data/projects";
+import { useProjects } from "./hooks/useProjects";
 
-const initialState = Object.fromEntries(
-  projects.map((project, index) => [
-    project.id,
-    {
-      liked: false,
-      comments:
-        index === 0
-          ? [
-              {
-                name: "Mika Reyes",
-                body: "This platform looks incredibly useful for the community.",
-              },
-            ]
-          : [{ name: "Alex Santos", body: "Clean work, Carl!" }],
-    },
-  ]),
-);
-
-function ProfilePage({
-  postState,
-  setPostState,
-  headerRef,
-  visits,
-  likes,
-  liked,
-  onLike,
-}) {
+function ProfilePage({ headerRef, visits, likes, liked, onLike, projects, likedIds, likeProject, addComment, loading, error }) {
   return (
     <main className="max-w-350 mx-auto">
       <ProfileHeader
@@ -44,12 +18,14 @@ function ProfilePage({
         onLike={onLike}
       />
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(280px,380px)_minmax(0,1fr)] gap-2 p-2">
-        <Sidebar />
+        <Sidebar projects={projects} />
         <PostFeed
-          postState={postState}
-          setPostState={(id, value) =>
-            setPostState((current) => ({ ...current, [id]: value }))
-          }
+          projects={projects}
+          likedIds={likedIds}
+          onLike={likeProject}
+          onAddComment={addComment}
+          loading={loading}
+          error={error}
         />
       </div>
     </main>
@@ -61,10 +37,11 @@ function AppContent() {
   const [likes, setLikes] = useState(1204);
   const [liked, setLiked] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
-  const [postState, setPostState] = useState(initialState);
   const headerRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const { projects, likedIds, loading, error, likeProject, addComment } =
+    useProjects();
   useEffect(() => {
     const next = Number(localStorage.getItem("portfolio-visits") || 1204) + 1;
     localStorage.setItem("portfolio-visits", next);
@@ -91,13 +68,13 @@ function AppContent() {
     );
     if (headerRef.current) observer.observe(headerRef.current);
     return () => observer.disconnect();
-  }, [headerRef.current]);
+  }, []);
   const detail = location.pathname.match(/^\/post\/([^/]+)/);
   const project = detail && projects.find((item) => item.id === detail[1]);
   const image = Number(new URLSearchParams(location.search).get("img")) || 0;
   useEffect(() => {
-    if (detail && !project) navigate("/");
-  }, [detail, project, navigate]);
+    if (detail && !loading && !project) navigate("/");
+  }, [detail, loading, project, navigate]);
   return (
     <>
       <Routes>
@@ -105,13 +82,17 @@ function AppContent() {
           path="*"
           element={
             <ProfilePage
-              postState={postState}
-              setPostState={setPostState}
               headerRef={headerRef}
               visits={visits}
               likes={likes}
               liked={liked}
               onLike={onLike}
+              projects={projects}
+              likedIds={likedIds}
+              likeProject={likeProject}
+              addComment={addComment}
+              loading={loading}
+              error={error}
             />
           }
         />
@@ -126,11 +107,10 @@ function AppContent() {
       {project && (
         <PostDetailView
           project={project}
-          initialImage={Math.min(image, project.images.length - 1)}
-          postState={postState[project.id]}
-          setPostState={(value) =>
-            setPostState((current) => ({ ...current, [project.id]: value }))
-          }
+          liked={likedIds.includes(project.id)}
+          onLike={likeProject}
+          onAddComment={addComment}
+          initialImage={Math.min(image, (project.image_urls ?? []).length - 1)}
         />
       )}
     </>
