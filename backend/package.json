@@ -1,14 +1,26 @@
 {
   "name": "portfolio-backend",
   "version": "1.0.0",
-  "description": "Supabase-backed backend foundation for the Carl Salido Madrigal portfolio",
+  "description": "Supabase-backed backend for the Carl Salido Madrigal portfolio",
   "type": "module",
-  "main": "config/supabase.js",
+  "main": "src/server.js",
   "private": true,
   "scripts": {
-    "start": "node config/supabase.js"
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "check": "node scripts/check-connection.js",
+    "seed": "node src/seeders/post.seeder.js"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.39.0"
+    "@supabase/supabase-js": "^2.39.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.0",
+    "zod": "^4.0.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
   }
 }

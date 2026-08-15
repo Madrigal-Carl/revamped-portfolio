@@ -1,21 +1,38 @@
 # Portfolio Backend
 
-Supabase-backed backend foundation for the portfolio project
+Express.js + Supabase backend for the portfolio project
 (React + Tailwind frontend).
 
 ## Purpose
 
-This folder will eventually hold all backend-related code:
-
-- `config/` — Supabase client setup (database access)
-- `migrations/` — SQL schema + Row Level Security (RLS) policies
-- `models/` — (future) domain helpers built on the client
-- `routes/` — (future) API routes
+The backend serves the portfolio posts (projects) with their comments and
+likes, and lets anonymous guests comment and like posts.
 
 > **Auth note:** This project intentionally does **not** use Supabase Auth.
 > Guests are identified by a client-generated `guest_id` (a UUID stored in
-> localStorage on the frontend) that is sent with every request. No auth
-> logic is implemented yet.
+> localStorage on the frontend) that is sent with every request.
+
+## Folder structure
+
+```
+backend/
+├── src/
+│   ├── app.js                 # Express app (middleware, routes, CORS)
+│   ├── server.js              # Entry point
+│   ├── config/
+│   │   ├── env.js             # Loads .env
+│   │   └── supabase.js        # Supabase client
+│   ├── controllers/           # Request handlers
+│   ├── middlewares/           # errorHandler, notFoundHandler
+│   ├── models/                # Supabase data-access layer
+│   ├── routes/                # Express routers
+│   ├── services/              # Business logic
+│   ├── validators/            # Zod request validation
+│   ├── utils/                 # asyncHandler, ApiError
+│   └── seeders/               # Seed script for projects
+├── migrations/                # SQL schema + RLS policies
+└── scripts/check-connection.js
+```
 
 ## Setup
 
@@ -30,36 +47,51 @@ This folder will eventually hold all backend-related code:
 
    ```bash
    cp .env.example .env
-   # edit .env -> SUPABASE_URL, SUPABASE_ANON_KEY
+   # edit .env -> SUPABASE_URL, SUPABASE_ANON_KEY, CLIENT_URL
    ```
 
    Find these values in the Supabase dashboard under
    **Project Settings -> API**.
 
-## Running the migrations
+3. Run the migrations in `migrations/` against your database
+   (Supabase dashboard **SQL Editor**, in order `0001` → `0003`).
 
-Run the SQL files in order against your Supabase database
-(**SQL Editor** in the dashboard, or via `supabase db push` / the
-Supabase CLI):
+4. Seed the projects table:
 
-1. `migrations/0001_create_projects.sql`
-2. `migrations/0002_create_comments.sql`
-3. `migrations/0003_create_likes.sql`
+   ```bash
+   npm run seed
+   ```
 
-Each file creates its table and enables Row Level Security with the
-appropriate policies:
+## Running the server
 
-| Table      | RLS policies (client-facing)                        |
-| ---------- | --------------------------------------------------- |
-| `projects` | SELECT only                                          |
-| `comments` | SELECT + INSERT only (no UPDATE/DELETE)              |
-| `likes`    | SELECT + INSERT only (no UPDATE/DELETE), unique pair |
+```bash
+npm run dev    # nodemon, hot reload
+npm start      # plain node
+```
 
-Comment/like moderation (UPDATE/DELETE) is intentionally **not** part of
-these policies — it will be handled separately later (e.g. Supabase
-dashboard using the service role key, or an admin-only route).
+Server runs on `PORT` (default `5000`).
 
-## Status
+## API
 
-This is the schema/config foundation only. API routes, comment/like
-logic, and frontend integration are **not** implemented yet.
+| Method | Endpoint                  | Description                                    |
+| ------ | ------------------------- | ---------------------------------------------- |
+| GET    | `/api/health`             | Health check                                   |
+| GET    | `/api/posts`              | All posts with comments + like counts          |
+| GET    | `/api/posts/:id`          | Single post with comments + like counts        |
+| POST   | `/api/posts/:id/comments` | Add a comment (`{ guest_id, content }`)        |
+| POST   | `/api/posts/:id/likes`    | Like a post (`{ guest_id }`)                   |
+
+- `GET /api/posts?guest_id=<uuid>` also returns `liked_by_me` for that guest.
+- `like_count` is derived from the `likes` rows (RLS allows public SELECT).
+- Liking twice with the same `guest_id` returns `409` (unique constraint).
+
+## RLS policies (client-facing)
+
+| Table      | Policies                     |
+| ---------- | ---------------------------- |
+| `projects` | SELECT only                  |
+| `comments` | SELECT + INSERT only         |
+| `likes`    | SELECT + INSERT only         |
+
+Comment/like moderation (UPDATE/DELETE) is handled separately later and is
+**not** part of these policies.
