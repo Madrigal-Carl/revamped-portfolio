@@ -1,25 +1,20 @@
 import { Heart, Eye, Mail, Phone } from "lucide-react";
+import { profile } from "../data/profile";
 export default function ProfileHeader({ visits, likes, liked, onLike, sectionRef }) {
   return (
     <section ref={sectionRef} className="bg-white border-b border-divider">
       <div
         className="h-50 bg-cover bg-center"
-        style={{
-          backgroundImage: "url(https://picsum.photos/seed/devcover/1600/500)",
-        }}
+        style={{ backgroundImage: `url(${profile.cover})` }}
       />
       <div className="px-3 pb-4 text-center">
         <img
           className="w-42 h-42 object-cover rounded-full border-4 border-white mx-auto -mt-21 relative"
-          src="https://picsum.photos/seed/carlavatar/300/300"
-          alt="Carl Salido Madrigal"
+          src={profile.avatar}
+          alt={profile.name}
         />
-        <h1 className="font-poppins font-bold text-2xl mt-2">
-          Carl Salido Madrigal
-        </h1>
-        <p className="text-[15px] text-text-secondary mt-1">
-          Full-Stack Developer | MERN · Laravel · Flutter
-        </p>
+        <h1 className="font-poppins font-bold text-2xl mt-2">{profile.name}</h1>
+        <p className="text-[15px] text-text-secondary mt-1">{profile.title}</p>
         <div className="mt-4 flex items-center justify-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-fb-blue px-3 py-1.5 font-semibold text-white">
             <Eye size={15} /> {visits.toLocaleString()} views
@@ -34,10 +29,10 @@ export default function ProfileHeader({ visits, likes, liked, onLike, sectionRef
         </div>
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-3 text-[13px] text-text-secondary">
           <span className="inline-flex items-center gap-1">
-            <Mail size={14} /> carlsalido.madrigal@gmail.com
+            <Mail size={14} /> {profile.email}
           </span>
           <span className="inline-flex items-center gap-1">
-            <Phone size={14} /> 0964 178 7140
+            <Phone size={14} /> {profile.phone}
           </span>
         </div>
       </div>

@@ -6,83 +6,56 @@ import {
   Mail,
   Phone,
 } from "lucide-react";
+import { profile, experience, education } from "../data/profile";
+
 export function ContactCard() {
   return (
     <div className="bg-white rounded-lg p-3">
       <h2 className="font-poppins font-bold text-xl mb-3">Details</h2>
       <div className="space-y-2 text-sm text-text-secondary">
-        <p className="font-semibold text-text-primary">Carl Salido Madrigal</p>
-        <p>Full-Stack Developer</p>
+        <p className="font-semibold text-text-primary">{profile.name}</p>
+        <p>{profile.title}</p>
         <p className="flex gap-2 items-center">
-          <Mail size={15} /> carlsalido.madrigal@gmail.com
+          <Mail size={15} /> {profile.email}
         </p>
         <p className="flex gap-2 items-center">
-          <Phone size={15} /> 0964 178 7140
+          <Phone size={15} /> {profile.phone}
         </p>
         <a
           className="flex gap-2 items-center text-fb-blue"
-          href="https://portfolio-tan.vercel.app"
+          href={profile.portfolioUrl}
           target="_blank"
         >
-          <LinkIcon size={15} /> portfolio-tan.vercel.app
+          <LinkIcon size={15} /> {profile.portfolioLabel}
         </a>
         <p className="flex gap-2 items-center">
-          <MapPin size={15} /> Marinduque, PH
+          <MapPin size={15} /> {profile.location}
         </p>
       </div>
     </div>
   );
 }
+
 export function ExperienceCard() {
   return (
     <InfoCard title="Experience" Icon={BriefcaseBusiness}>
-      <Item
-        title="Freelance Full Stack Developer"
-        meta="Self-Employed, Marinduque · Jan 2024 – Present"
-        lines={[
-          "Delivered web and mobile applications using Laravel, React.js, Flutter, and MySQL.",
-          "Designed and optimized database structures and RESTful APIs.",
-          "Collaborated with clients on requirements gathering, prototyping, testing, and deployment.",
-        ]}
-      />
-      <Item
-        title="OJT Intern / Full Stack Developer"
-        meta="Informatics College, Recto, Manila · Jan 2026 – April 2026"
-        lines={[
-          "Led a student team in developing two web applications and two Power Automate solutions.",
-          "Contributed to frontend, backend, testing, and deployment throughout the development lifecycle.",
-          "Coordinated project execution to ensure timely and successful delivery.",
-        ]}
-      />
+      {experience.map((item) => (
+        <Item key={item.title} {...item} />
+      ))}
     </InfoCard>
   );
 }
+
 export function EducationCard() {
   return (
     <InfoCard title="Education" Icon={GraduationCap}>
-      <Item
-        title="Bachelor of Science in Information Technology, Major in Software Development"
-        meta="Marinduque State University — Cum Laude"
-        lines={["2022 – 2026"]}
-      />
-      <Item
-        title="Information and Communications Technology"
-        meta="Marinduque Midwest College — With Honor"
-        lines={["2020 – 2022"]}
-      />
-      <Item
-        title="Bangbang National High School"
-        meta="Junior High School"
-        lines={["2016 – 2020"]}
-      />
-      <Item
-        title="Gasan Central School"
-        meta="Elementary"
-        lines={["2010 – 2016"]}
-      />
+      {education.map((item) => (
+        <Item key={item.title} {...item} />
+      ))}
     </InfoCard>
   );
 }
+
 function InfoCard({ title, Icon, children }) {
   return (
     <div className="bg-white rounded-lg p-3">
@@ -93,6 +66,7 @@ function InfoCard({ title, Icon, children }) {
     </div>
   );
 }
+
 function Item({ title, meta, lines }) {
   return (
     <div className="mb-4 last:mb-0">
