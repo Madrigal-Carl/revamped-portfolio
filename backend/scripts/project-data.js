@@ -28,7 +28,7 @@ export const projectData = [
     completed_at: "2025-12-01",
   },
   {
-    folder: "shape-web",
+    folder: "shape-website",
     title: "S.H.A.P.E Admin & Learning Management System",
     description:
       "S.H.A.P.E Admin & Learning Management System is the web-based administrative platform for teachers and school administrators managing the S.H.A.P.E ecosystem. It centralizes lesson and activity management, letting teachers upload content and organize curriculum by semester, while automated grading and progress tracking reduce manual review work. Administrators can manage teacher and admin roles, monitor student performance across the system, and oversee an awards and achievement program that keeps students engaged. The platform also handles routine reporting automatically — sending weekly summary emails and generating exportable grade sheets, student lists, and other records on demand — all integrated directly with the mobile learning application.",
