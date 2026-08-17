@@ -189,10 +189,10 @@ export default function PostDetailView({
                   </div>
                 )}
                 <div className="py-2 min-w-0">
-                  <div className="font-semibold text-sm truncate">
+                  <div className="font-semibold truncate">
                     {project.project_url ? "View project" : "View repository"}
                   </div>
-                  <div className="text-xs text-text-secondary flex gap-1 items-center truncate">
+                  <div className="text-sm text-text-secondary flex gap-1 items-center truncate">
                     {domainOf(project.project_url || project.repo_url)}{" "}
                     <ExternalLink size={11} />
                   </div>
