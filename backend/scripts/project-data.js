@@ -256,9 +256,9 @@ export const projectData = [
   },
   {
     folder: "fport",
-    title: "FPortfolio: Facebook-Style Developer Portfolio Website",
+    title: "StackBook: Facebook-Style Developer Portfolio Website",
     description:
-      "FPortfolio is a Facebook-style developer portfolio that presents projects as social media posts. The frontend is built with React and Tailwind CSS, featuring a Facebook-inspired profile layout, a project feed with multi-photo galleries, and a theater-mode post detail view. The backend is an Express API backed by Supabase (PostgreSQL + Storage), where anonymous guests identified by a client-generated UUID can like projects and post comments, with Row Level Security enforcing public reads and guest inserts.",
+      "StackBook is a Facebook-style developer portfolio that presents projects as social media posts. The frontend is built with React and Tailwind CSS, featuring a Facebook-inspired profile layout, a project feed with multi-photo galleries, and a theater-mode post detail view. The backend is an Express API backed by Supabase (PostgreSQL + Storage), where anonymous guests identified by a client-generated UUID can like projects and post comments, with Row Level Security enforcing public reads and guest inserts.",
     features: [
       "Facebook-style profile and post feed UI",
       "Theater-mode post detail view with image gallery",
