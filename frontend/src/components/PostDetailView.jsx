@@ -114,7 +114,7 @@ export default function PostDetailView({
                 type="button"
                 aria-label="Previous image"
                 onClick={() => next(-1)}
-                className="absolute left-3 w-11 h-11 rounded-full bg-white/20 text-white flex items-center justify-center"
+                className="absolute left-3 w-11 h-11 rounded-full bg-black/30 text-white flex items-center justify-center"
               >
                 <ChevronLeft size={28} />
               </button>
@@ -122,7 +122,7 @@ export default function PostDetailView({
                 type="button"
                 aria-label="Next image"
                 onClick={() => next(1)}
-                className="absolute right-3 w-11 h-11 rounded-full bg-white/20 text-white flex items-center justify-center"
+                className="absolute right-3 w-11 h-11 rounded-full bg-black/30 text-white flex items-center justify-center"
               >
                 <ChevronRight size={28} />
               </button>
@@ -160,7 +160,9 @@ export default function PostDetailView({
                 </div>
               )}
               {project.description && (
-                <div className="mt-2 text-text-primary">{project.description}</div>
+                <div className="mt-2 text-text-primary">
+                  {project.description}
+                </div>
               )}
               <ul className="mt-2 space-y-2 list-disc ml-5">
                 {(project.features ?? []).map((feature) => (
