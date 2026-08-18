@@ -14,7 +14,7 @@ export const profile = {
 };
 
 export const intro =
-  "Entry-level Full-Stack Developer with hands-on experience building web and mobile applications using React, Node.js, Laravel, Flutter, and MySQL. Experienced in full-stack development, REST APIs, database design, Agile collaboration, and deploying academic and client-based systems.";
+  "Entry-level Full-Stack Developer with hands-on experience building web and mobile applications using MERN, Laravel, Flutter, and MySQL. Experienced in full-stack development, REST APIs, database design, Agile collaboration, and deploying academic and client-based systems.";
 
 export const experience = [
   {
