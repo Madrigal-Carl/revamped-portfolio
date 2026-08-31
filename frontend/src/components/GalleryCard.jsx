@@ -4,10 +4,14 @@ import { useNavigate } from "react-router-dom";
 export default function GalleryCard({ projects }) {
   const navigate = useNavigate();
   const groups = (projects ?? [])
-    .map((project) => ({
-      projectId: project.id,
-      images: (project.image_urls ?? []).slice(0, 3),
-    }))
+    .map((project) => {
+      const allImages = project.image_urls ?? [];
+      return {
+        projectId: project.id,
+        images: allImages.slice(0, 3),
+        extra: allImages.length - 3,
+      };
+    })
     .filter((group) => group.images.length > 0);
 
   return (
@@ -30,13 +34,18 @@ export default function GalleryCard({ projects }) {
                     onClick={() =>
                       navigate(`/post/${group.projectId}?img=${i}`)
                     }
-                    className="aspect-square overflow-hidden rounded-sm hover:opacity-90"
+                    className="relative aspect-square overflow-hidden rounded-sm hover:opacity-90"
                   >
                     <img
                       className="w-full h-full object-cover"
                       src={src}
                       alt="Project screenshot"
                     />
+                    {group.extra > 0 && i === group.images.length - 1 && (
+                      <span className="absolute inset-0 bg-black/55 backdrop-blur-xs flex items-center justify-center text-white text-sm sm:text-base font-semibold">
+                        +{group.extra} more
+                      </span>
+                    )}
                   </button>
                 ))}
               </div>
