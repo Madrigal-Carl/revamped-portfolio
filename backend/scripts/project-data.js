@@ -284,4 +284,30 @@ export const projectData = [
     repo_url: "https://github.com/Madrigal-Carl/revamped-portfolio",
     completed_at: "2026-08-15",
   },
+  {
+    folder: "prsentry",
+    title: "PRsentry: AI-Powered Pull Request Reviewer",
+    description:
+      "PRsentry is a command-line tool and GitHub Action that automatically reviews pull requests against a repository's own style guide. It fetches PR diffs through the GitHub API and sends them to Google's Gemini model for analysis, then posts the findings back as inline review comments directly on the PR. Teams can customize the review rules by editing a style guide file in their repo, with a default MERN-stack style guide included out of the box. It can be run manually via the CLI or wired into CI through the included GitHub Action, which reviews every new pull request automatically.",
+    features: [
+      "AI-powered code review using Google's Gemini model",
+      "Automatic PR diff fetching and inline review comments via the GitHub API",
+      "Customizable, repo-specific style guide with a default MERN-stack guide included",
+      "GitHub Action for automatic reviews on every new pull request",
+      "CLI commands for setup (init, add-action) and manual PR reviews",
+    ],
+    tech_stack: [
+      "Node.js",
+      "JavaScript",
+      "Commander.js",
+      "GitHub API (Octokit)",
+      "Google Gemini API",
+      "GitHub Actions",
+      "npm",
+      "Git & GitHub",
+    ],
+    project_url: "https://www.npmjs.com/package/prsentry",
+    repo_url: "https://github.com/Madrigal-Carl/prsentry",
+    completed_at: "2026-09-01",
+  },
 ];
