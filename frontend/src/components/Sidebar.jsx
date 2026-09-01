@@ -7,8 +7,8 @@ export default function Sidebar({ projects }) {
     <aside className="space-y-2 lg:sticky lg:top-2 lg:self-start">
       <BioCard />
       <ContactCard />
-      <SkillsCard />
       <ExperienceCard />
+      <SkillsCard />
       <EducationCard />
       <GalleryCard projects={projects} />
     </aside>
