@@ -219,22 +219,6 @@ export const projectData = [
     completed_at: "2026-04-01",
   },
   {
-    folder: "old-port",
-    title: "Project Store: Portfolio Showcase Website",
-    description:
-      "Project Store is a Play Store-inspired portfolio site for showcasing projects and tech stacks in a clean, card-based layout.",
-    problems: [],
-    solutions: [],
-    features: [
-      "Responsive project portfolio showcase",
-      "Technology stack presentation",
-    ],
-    tech_stack: ["ReactJS", "Tailwind CSS", "JavaScript", "Git & GitHub", "Vercel"],
-    project_url: "https://cm-portfolio-tan.vercel.app/",
-    repo_url: "https://github.com/Madrigal-Carl/Portfolio",
-    completed_at: "2026-05-28",
-  },
-  {
     folder: "task-manager",
     title: "Task Manager: Full-Stack CRUD Application",
     description:

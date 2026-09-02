@@ -3,6 +3,7 @@ import {
   getPost,
   addComment,
   likePost,
+  deletePost,
 } from "../services/post.service.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
@@ -46,5 +47,13 @@ export const likePostHandler = asyncHandler(async (req, res) => {
   return res.status(201).json({
     message: "Post liked successfully",
     like,
+  });
+});
+
+export const deletePostHandler = asyncHandler(async (req, res) => {
+  await deletePost(req.params.id);
+
+  return res.status(200).json({
+    message: "Post and related data deleted successfully",
   });
 });

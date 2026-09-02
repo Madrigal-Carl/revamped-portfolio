@@ -2,6 +2,7 @@ import ApiError from "../utils/ApiError.js";
 import {
   getAllProjects,
   getProjectById,
+  deleteProjectById,
 } from "../models/project.model.js";
 import {
   getCommentsForProjects,
@@ -139,4 +140,9 @@ export const likePost = async ({ projectId, guestId }) => {
     }
     throw error;
   }
+};
+
+export const deletePost = async (projectId) => {
+  await ensureProjectExists(projectId);
+  return await deleteProjectById(projectId);
 };

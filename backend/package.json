@@ -10,7 +10,8 @@
     "start": "node src/server.js",
     "check": "node scripts/check-connection.js",
     "seed-projects": "node scripts/seed-projects.js",
-    "upload-images": "node scripts/upload-images.js"
+    "upload-images": "node scripts/upload-images.js",
+    "remove-project": "node scripts/remove-project.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",

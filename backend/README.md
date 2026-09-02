@@ -80,6 +80,7 @@ Server runs on `PORT` (default `5000`).
 | GET    | `/api/posts/:id`          | Single post with comments + like counts        |
 | POST   | `/api/posts/:id/comments` | Add a comment (`{ guest_id, content }`)        |
 | POST   | `/api/posts/:id/likes`    | Like a post (`{ guest_id }`)                   |
+| DELETE | `/api/posts/:id`          | Delete a post and all cascading child data      |
 
 - `GET /api/posts?guest_id=<uuid>` also returns `liked_by_me` for that guest.
 - `like_count` is derived from the `likes` rows (RLS allows public SELECT).
@@ -183,4 +184,36 @@ array[
   'https://xxxx.supabase.co/storage/v1/object/public/project-images/shape/shape8.png',
   'https://xxxx.supabase.co/storage/v1/object/public/project-images/shape/shape9.png'
 ]
+```
+
+---
+
+## Removing a project (Database + Storage Cleanup)
+
+`scripts/remove-project.js` deletes a project and cascades through all related models and tables:
+- `comments`
+- `likes`
+- `features`
+- `tech_stacks`
+- `problems`
+- `solutions`
+- `images` (database records)
+- Storage screenshots in the `project-images` bucket
+- `projects` (parent row)
+
+### Usage
+
+```bash
+cd backend
+
+# List all projects with IDs
+npm run remove-project
+
+# Remove by folder name, title, or project UUID
+npm run remove-project prsentry
+npm run remove-project "CHL SmartSolutions"
+npm run remove-project 550e8400-e29b-41d4-a716-446655440000
+
+# Test first without deleting (dry run)
+npm run remove-project prsentry -- --dry-run
 ```
