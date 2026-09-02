@@ -164,11 +164,57 @@ export default function PostDetailView({
                   {project.description}
                 </div>
               )}
-              <ul className="mt-2 space-y-2 list-disc ml-5">
-                {(project.features ?? []).map((feature) => (
-                  <li key={feature}>{feature}</li>
-                ))}
-              </ul>
+              {((project.problems ?? []).length > 0 ||
+                (project.solutions ?? []).length > 0) && (
+                <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    {(project.problems ?? []).length > 0 && (
+                      <>
+                        <div className="font-semibold font-poppins text-text-primary">
+                          Problems
+                        </div>
+                        <ul className="mt-1 space-y-1 list-disc ml-4">
+                          {project.problems.map((item) => (
+                            <li key={item} className="leading-snug">
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                  </div>
+                  <div>
+                    {(project.solutions ?? []).length > 0 && (
+                      <>
+                        <div className="font-semibold font-poppins text-text-primary">
+                          Solutions
+                        </div>
+                        <ul className="mt-1 space-y-1 list-disc ml-4">
+                          {project.solutions.map((item) => (
+                            <li key={item} className="leading-snug">
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+              {(project.features ?? []).length > 0 && (
+                <div className="mt-3 text-sm">
+                  <div className="font-semibold font-poppins text-text-primary">
+                    Features
+                  </div>
+                  <ul className="mt-1 space-y-1 list-disc ml-4">
+                    {project.features.map((feature) => (
+                      <li key={feature} className="leading-snug">
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
             {(project.project_url || project.repo_url) && (
               <a

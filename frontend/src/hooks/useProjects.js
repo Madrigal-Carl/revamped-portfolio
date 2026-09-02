@@ -35,7 +35,7 @@ export function useProjects() {
 
       const { data, error } = await supabase
         .from("projects")
-        .select("*, features(name), tech_stacks(name), images(path)")
+        .select("*, features(name), tech_stacks(name), images(path), problems(name), solutions(name)")
         .order("completed_at", { ascending: false, nullsFirst: false })
         .order("created_at", { ascending: false });
 
@@ -76,6 +76,8 @@ export function useProjects() {
       setProjects(
         rows.map((project) => ({
           ...project,
+          problems: (project.problems ?? []).map((problem) => problem.name),
+          solutions: (project.solutions ?? []).map((solution) => solution.name),
           features: (project.features ?? []).map((feature) => feature.name),
           tech_stack: (project.tech_stacks ?? []).map((stack) => stack.name),
           image_urls: (project.images ?? []).map((image) => image.path),

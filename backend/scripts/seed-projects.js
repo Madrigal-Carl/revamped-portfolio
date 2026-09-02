@@ -64,31 +64,35 @@ const upsertProject = async (data) => {
   return inserted.id;
 };
 
-// Replaces a project's features / tech_stacks / images rows.
-const replaceChildren = async (projectId, { features, techStacks, images }) => {
+// Replaces a project's features / tech_stacks / images / problems / solutions rows.
+const replaceChildren = async (projectId, { features, techStacks, images, problems, solutions }) => {
   const deleteRows = async (table) => {
     const { error } = await supabase.from(table).delete().eq("project_id", projectId);
     if (error) throw error;
   };
 
   const insertRows = async (table, column, values) => {
-    if (!values.length) return;
+    if (!values?.length) return;
     const { error } = await supabase
       .from(table)
       .insert(values.map((value) => ({ project_id: projectId, [column]: value })));
     if (error) throw error;
   };
 
+  await deleteRows("problems");
+  await deleteRows("solutions");
   await deleteRows("features");
   await deleteRows("tech_stacks");
   await deleteRows("images");
 
+  await insertRows("problems", "name", problems ?? []);
+  await insertRows("solutions", "name", solutions ?? []);
   await insertRows("features", "name", features);
   await insertRows("tech_stacks", "name", techStacks);
   await insertRows("images", "path", images);
 
   console.log(
-    `[${projectId.slice(0, 8)}] Children set: ${features.length} features, ${techStacks.length} tech stacks, ${images.length} images.`,
+    `[${projectId.slice(0, 8)}] Children set: ${(problems ?? []).length} problems, ${(solutions ?? []).length} solutions, ${features.length} features, ${techStacks.length} tech stacks, ${images.length} images.`,
   );
 };
 
@@ -102,6 +106,8 @@ const seedProject = async (data) => {
   const projectId = await upsertProject(data);
 
   await replaceChildren(projectId, {
+    problems: data.problems ?? [],
+    solutions: data.solutions ?? [],
     features: data.features ?? [],
     techStacks: data.tech_stack ?? [],
     images: imageUrls,

@@ -14,6 +14,8 @@ import {
 import { getFeaturesForProjects } from "../models/feature.model.js";
 import { getTechStacksForProjects } from "../models/techStack.model.js";
 import { getImagesForProjects } from "../models/image.model.js";
+import { getProblemsForProjects } from "../models/problem.model.js";
+import { getSolutionsForProjects } from "../models/solution.model.js";
 
 const groupBy = (rows, key) =>
   rows.reduce((acc, row) => {
@@ -30,11 +32,15 @@ const attachProjectChildren = (project, {
   featuresByProject,
   techStacksByProject,
   imagesByProject,
+  problemsByProject,
+  solutionsByProject,
 }, guestId) => {
   const projectLikes = likesByProject[project.id] ?? [];
 
   return {
     ...project,
+    problems: (problemsByProject?.[project.id] ?? []).map((row) => row.name),
+    solutions: (solutionsByProject?.[project.id] ?? []).map((row) => row.name),
     features: (featuresByProject[project.id] ?? []).map((row) => row.name),
     tech_stack: (techStacksByProject[project.id] ?? []).map((row) => row.name),
     image_urls: (imagesByProject[project.id] ?? []).map((row) => row.path),
@@ -53,12 +59,14 @@ export const getPosts = async (guestId) => {
 
   const projectIds = projects.map((project) => project.id);
 
-  const [comments, likes, features, techStacks, images] = await Promise.all([
+  const [comments, likes, features, techStacks, images, problems, solutions] = await Promise.all([
     getCommentsForProjects(projectIds),
     getLikesForProjects(projectIds),
     getFeaturesForProjects(projectIds),
     getTechStacksForProjects(projectIds),
     getImagesForProjects(projectIds),
+    getProblemsForProjects(projectIds),
+    getSolutionsForProjects(projectIds),
   ]);
 
   const groups = {
@@ -67,6 +75,8 @@ export const getPosts = async (guestId) => {
     featuresByProject: groupBy(features, "project_id"),
     techStacksByProject: groupBy(techStacks, "project_id"),
     imagesByProject: groupBy(images, "project_id"),
+    problemsByProject: groupBy(problems, "project_id"),
+    solutionsByProject: groupBy(solutions, "project_id"),
   };
 
   return projects.map((project) => attachProjectChildren(project, groups, guestId));
@@ -75,16 +85,20 @@ export const getPosts = async (guestId) => {
 export const getPost = async (id, guestId) => {
   const project = await getProjectById(id);
 
-  const [comments, likes, features, techStacks, images] = await Promise.all([
+  const [comments, likes, features, techStacks, images, problems, solutions] = await Promise.all([
     getCommentsForProjects([id]),
     getLikesForProjects([id]),
     getFeaturesForProjects([id]),
     getTechStacksForProjects([id]),
     getImagesForProjects([id]),
+    getProblemsForProjects([id]),
+    getSolutionsForProjects([id]),
   ]);
 
   return {
     ...project,
+    problems: problems.map((row) => row.name),
+    solutions: solutions.map((row) => row.name),
     features: features.map((row) => row.name),
     tech_stack: techStacks.map((row) => row.name),
     image_urls: images.map((row) => row.path),

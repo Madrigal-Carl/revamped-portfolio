@@ -43,11 +43,49 @@ export default function PostCard({ project, liked, onLike, onAddComment }) {
       {project.description && (
         <p className="mt-2 text-text-primary">{project.description}</p>
       )}
+      {((project.problems ?? []).length > 0 ||
+        (project.solutions ?? []).length > 0) && (
+        <div className="mt-3 grid grid-cols-2 gap-3 text-[14px]">
+          <div>
+            {(project.problems ?? []).length > 0 && (
+              <>
+                <div className="font-semibold text-text-primary">Problems</div>
+                <div className="mt-1 space-y-1">
+                  {project.problems.map((item) => (
+                    <div key={item} className="leading-snug">
+                      • {item}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+          <div>
+            {(project.solutions ?? []).length > 0 && (
+              <>
+                <div className="font-semibold text-text-primary">Solutions</div>
+                <div className="mt-1 space-y-1">
+                  {project.solutions.map((item) => (
+                    <div key={item} className="leading-snug">
+                      • {item}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
       {(project.features ?? []).length > 0 && (
-        <div className="mt-2 space-y-1">
-          {(project.features ?? []).map((item) => (
-            <div key={item}>• {item}</div>
-          ))}
+        <div className="mt-3 text-[14px]">
+          <div className="font-semibold text-text-primary">Features</div>
+          <div className="mt-1 space-y-1">
+            {(project.features ?? []).map((item) => (
+              <div key={item} className="leading-snug">
+                • {item}
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </>

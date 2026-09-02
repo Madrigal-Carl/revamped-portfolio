@@ -15,7 +15,17 @@ export const projectData = [
     folder: "shape-mobile",
     title: "S.H.A.P.E: Mobile Learning Application for Special Needs Education",
     description:
-      "S.H.A.P.E is a mobile learning application developed for students under Special Needs Education (SNED). The application allows students to access educational activities and interactive games even without internet connection through offline functionality. It includes a total of 20+ interactive educational games designed to enhance learning engagement. Integrated with a web management system, teachers can upload lessons, monitor student progress, manage curriculum and semesters, and track achievements through an awards system. The platform also includes automated grading and progress tracking features.",
+      "S.H.A.P.E is an offline-capable mobile learning app for Special Needs Education, featuring 20+ interactive games, progress tracking, and an awards system, integrated with a web-based teacher management platform.",
+    problems: [
+      "No internet connection available for learning",
+      "Few teachers can teach Filipino Sign Language",
+      "Students feel unmotivated to study",
+    ],
+    solutions: [
+      "Offline gameplay functionality",
+      "Interactive Filipino Sign Language games",
+      "Interactive educational games",
+    ],
     features: [
       "Offline gameplay functionality",
       "Interactive educational activities through gamification",
@@ -31,7 +41,17 @@ export const projectData = [
     folder: "shape-website",
     title: "S.H.A.P.E Admin & Learning Management System",
     description:
-      "S.H.A.P.E Admin & Learning Management System is the web-based administrative platform for teachers and school administrators managing the S.H.A.P.E ecosystem. It centralizes lesson and activity management, letting teachers upload content and organize curriculum by semester, while automated grading and progress tracking reduce manual review work. Administrators can manage teacher and admin roles, monitor student performance across the system, and oversee an awards and achievement program that keeps students engaged. The platform also handles routine reporting automatically — sending weekly summary emails and generating exportable grade sheets, student lists, and other records on demand — all integrated directly with the mobile learning application.",
+      "S.H.A.P.E Admin & LMS is the web platform for teachers and admins to manage lessons, grading, student progress, and awards for the S.H.A.P.E ecosystem, with automated weekly reports.",
+    problems: [
+      "Parents can't always bring their child to school",
+      "Students lose interest quickly",
+      "Parents aren't notified when their child needs to complete an activity",
+    ],
+    solutions: [
+      "Teachers can give lessons/activities even at home",
+      "Awards and achievement system",
+      "Automated weekly parent emails",
+    ],
     features: [
       "Lesson and activity management",
       "Student monitoring",
@@ -59,7 +79,17 @@ export const projectData = [
     folder: "chlsmartsolution",
     title: "CHL SmartSolutions",
     description:
-      "CHL SmartSolutions is a full-featured eCommerce and business management web application with role-based access for customers, cashiers, technicians, and administrators. It supports end-to-end operations through a built-in CMS for products and pages, inventory management with stock tracking, and both online order processing and walk-in cashier transactions. Technicians can be assigned and manage service tasks, while sales tracking, expense monitoring, and real-time activity dashboards give administrators visibility into performance and finances. Reports across sales, orders, and staff activity can be exported in CSV or PDF for further analysis.",
+      "CHL SmartSolutions is a role-based eCommerce and business management platform handling inventory, orders, service tasks, expenses, and reporting for admins, cashiers, technicians, and customers.",
+    problems: [
+      "Product stock levels get lost track of",
+      "Expenses aren't tracked",
+      "Order transaction receipts get lost",
+    ],
+    solutions: [
+      "Inventory management with stock notifications",
+      "Expense tracking",
+      "Order management system",
+    ],
     features: [
       "Role-based access control (Admin, Cashier, Technician, Customer)",
       "Inventory management system with stock tracking and updates",
@@ -81,7 +111,9 @@ export const projectData = [
     folder: "windshieldrvs",
     title: "WindShieldRVS",
     description:
-      "WindShieldRVS is a web-based house vulnerability assessment system that evaluates the structural risk of one-storey residential houses against strong winds. It applies structured evaluation logic to house data and automatically generates vulnerability risk ratings, helping users and administrators understand potential wind damage exposure. Location tracking and mapping tie each assessment to a specific house, while an admin dashboard lets reviewers monitor assessment data in real time. Results can be exported as PDF reports, and the interface is responsive across devices.",
+      "WindShieldRVS is a web-based system that evaluates one-storey houses for wind vulnerability, automatically generating risk ratings with location mapping and exportable PDF reports.",
+    problems: ["Homeowners can't tell if their house is vulnerable to strong winds"],
+    solutions: ["Automated vulnerability and rating generation"],
     features: [
       "Automated vulnerability rating generation",
       "Strong wind risk evaluation system",
@@ -99,7 +131,9 @@ export const projectData = [
     folder: "carscanai",
     title: "CarScanAI: Car Brand Recognition System",
     description:
-      "CarScanAI is a web-based AI-powered car brand recognition system built around a custom-trained image classification model. The model recognizes over 15 car brands from uploaded vehicle images with high accuracy, and a responsive web interface returns predictions in real time as soon as an image is submitted. The project covers the full pipeline end to end, from data preprocessing and model training through deployment, combining deep learning with a seamless user-facing experience.",
+      "CarScanAI is an AI-powered web app that recognizes 15+ car brands from uploaded images in real time using a custom-trained deep learning model.",
+    problems: [],
+    solutions: [],
     features: [
       "Custom-trained AI model for car brand recognition",
       "Image classification using deep learning",
@@ -123,7 +157,9 @@ export const projectData = [
     folder: "tableo",
     title: "Tableo: Event Tabulation System",
     description:
-      "Tableo is a web-based event tabulation system built to manage scoring, ranking, and result computation for competitions and organized events. Judges submit scores directly through the platform, which automatically tallies results in real time and applies ranking logic, including tie-break resolution, to keep standings accurate. Built-in event management tools and per-competition PDF report exports support transparent, efficient handling of results from scoring through to final release.",
+      "Tableo is a web-based event tabulation system that automates score tallying, ranking, and tie-break resolution for competitions, with per-event PDF report exports.",
+    problems: ["Manual score calculation", "Manual ranking"],
+    solutions: ["Automated score tallying", "Automated ranking"],
     features: [
       "Judge scoring and submission system",
       "Automated score tallying and ranking",
@@ -148,7 +184,17 @@ export const projectData = [
     folder: "swiftdocs",
     title: "SwiftDocs: Online Document Request System",
     description:
-      "SwiftDocs is a web-based document request and tracking system that lets students request, process, and monitor academic documents entirely online. Role-based access for Admin, RMO, and Cashier structures each request's path from submission through verification, payment, and release, with real-time tracking keeping students informed along the way. The system includes a document management module for organizing records, plus a sales and analytics dashboard and exportable PDF reports for administrative oversight.",
+      "SwiftDocs is a web-based system for students to request and track academic documents online, with role-based workflows and exportable reports for staff.",
+    problems: [
+      "Students can't track their requested documents",
+      "Staff don't know the status/order of requests",
+      "Requesting documents requires an onsite visit",
+    ],
+    solutions: [
+      "Real-time request tracking",
+      "Request aging visibility",
+      "Online document requesting",
+    ],
     features: [
       "Online document request system",
       "Real-time request tracking",
@@ -176,7 +222,9 @@ export const projectData = [
     folder: "old-port",
     title: "Project Store: Portfolio Showcase Website",
     description:
-      "Project Store is a portfolio showcase website for presenting projects, skills, and technologies in a clean, card-based interface inspired by the Google Play Store. The layout emphasizes clarity and accessibility, with a responsive project showcase that adapts across devices and a dedicated presentation of each project's technology stack, making it easy to browse work in an organized, visually engaging way.",
+      "Project Store is a Play Store-inspired portfolio site for showcasing projects and tech stacks in a clean, card-based layout.",
+    problems: [],
+    solutions: [],
     features: [
       "Responsive project portfolio showcase",
       "Technology stack presentation",
@@ -190,7 +238,9 @@ export const projectData = [
     folder: "task-manager",
     title: "Task Manager: Full-Stack CRUD Application",
     description:
-      "Task Manager is a full-stack task management application built to practice modern React development and backend API integration. It supports complete CRUD operations for tasks along with pagination, filtering, and search, backed by a REST API. TanStack Query handles server-state management and caching for efficient data fetching, while React Hook Form and Zod provide robust form validation. The interface is fully responsive, with the overall project focused on learning best practices for building maintainable, data-driven web applications.",
+      "Task Manager is a full-stack CRUD app for managing tasks with pagination, filtering, search, and form validation, built to practice React and backend integration.",
+    problems: [],
+    solutions: [],
     features: [
       "CRUD operations",
       "Pagination, filtering, and search",
@@ -220,7 +270,17 @@ export const projectData = [
     folder: "agricentral",
     title: "AgriCentral: Agricultural Resource Management Platform",
     description:
-      "AgriCentral is a centralized, role-based agricultural management platform built to move agricultural offices away from fragmented records and manual processes. It maintains farmer and cooperative registries alongside geo-tagged, parcel-level farm records, and tracks crops with yield estimates, livestock inventory and distribution history, and equipment ownership, usage, and maintenance. Resource requests for crops, equipment, and livestock are centralized alongside incident reporting for damages and disruptions, with immutable audit logs recording every action for accountability. Role-based access spans organizations and offices, while real-time dashboard analytics and exportable reports give officials clear visibility for faster, more transparent decisions across regions.",
+      "AgriCentral is a centralized platform for agricultural offices to manage farmer registries, crops, livestock, equipment, and resource requests, with audit logs and real-time analytics.",
+    problems: [
+      "Hard to know who to prioritize for aid during disasters",
+      "Unclear who currently holds a given livestock/equipment",
+      "No way to verify seeds were distributed correctly",
+    ],
+    solutions: [
+      "Farm and harvest recording with incident reporting",
+      "Livestock and equipment audit logs",
+      "Seed distribution tracking",
+    ],
     features: [
       "Farmer profile and association registry",
       "Geo-tagged farm records with parcel-level detail",
@@ -258,7 +318,9 @@ export const projectData = [
     folder: "fport",
     title: "StackBook: Facebook-Style Developer Portfolio Website",
     description:
-      "StackBook is a Facebook-style developer portfolio that presents projects as social media posts. The frontend is built with React and Tailwind CSS, featuring a Facebook-inspired profile layout, a project feed with multi-photo galleries, and a theater-mode post detail view. The backend is an Express API backed by Supabase (PostgreSQL + Storage), where anonymous guests identified by a client-generated UUID can like projects and post comments, with Row Level Security enforcing public reads and guest inserts.",
+      "StackBook is a Facebook-style developer portfolio presenting projects as social posts, with guest likes, comments, and multi-photo galleries.",
+    problems: [],
+    solutions: [],
     features: [
       "Facebook-style profile and post feed UI",
       "Theater-mode post detail view with image gallery",
@@ -288,7 +350,9 @@ export const projectData = [
     folder: "prsentry",
     title: "PRsentry: AI-Powered Pull Request Reviewer",
     description:
-      "PRsentry is an AI-powered pull request reviewer available as a CLI tool and an optional GitHub Action. It fetches a pull request's diff via the GitHub API, checks it against a customizable, repo-specific style guide using Google's Gemini models, and posts findings back as inline PR comments — with an interactive approve, always-approve, or reject workflow so nothing gets posted without sign-off. Large diffs are automatically split and batched to stay within model context limits, Gemini calls retry with backoff on rate limits, and every finding is validated against the actual diff before posting to filter out anything the model hallucinated.",
+      "PRsentry is an AI-powered pull request reviewer (CLI + GitHub Action) that checks diffs against a custom style guide and posts validated review comments automatically.",
+    problems: ["Manual PR reviewing is slow and inconsistent"],
+    solutions: ["Automated PR review"],
     features: [
       "AI-powered PR review against a customizable style guide",
       "Interactive approve, always-approve, or reject workflow",
